@@ -1,9 +1,5 @@
 const express = require("express");
-const {setTimeout} = require("timers/promises");
 require("dotenv").config();
-
-const axios = require("axios");
-const userAgent = require("user-agents");
 
 const PORT = process.env.PORT;
 
@@ -19,14 +15,17 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 // LinkedIN Login Handlers
-const {router : LoginToLinkedIn} = require("./router/linkedInLogin");
+const { router: LoginToLinkedIn } = require("./router/linkedInLogin");
 app.use("/api", LoginToLinkedIn);
 
 // LinkedIN Logout Handler
 const LogoutLinkedIn = require("./router/linkedInLogout");
-app.use("/api", LogoutLinkedIn)
+app.use("/api", LogoutLinkedIn);
+
+// Fetch Profile based on designation location company
+const getPeopleData = require("./router/getPeopleData");
+app.use("/api", getPeopleData);
 
 app.listen(PORT, () => {
     console.log(`Server in running on port ${PORT}`);
