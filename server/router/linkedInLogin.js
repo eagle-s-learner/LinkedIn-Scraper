@@ -21,6 +21,7 @@ router.get("/", async (req, res) => {
         return;
     }
 
+    // launching browser, creating page
     const browser = await puppeteer.launch({
         headless: false,
         args: [
