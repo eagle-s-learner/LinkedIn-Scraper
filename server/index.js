@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5174/",
+        origin: "http://localhost:5174",
     })
 );
 app.use(express.json());
@@ -21,9 +21,12 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // LinkedIN Login Handlers
-const LoginToLinkedIn = require("./router/linkedInLogin");
+const {router : LoginToLinkedIn} = require("./router/linkedInLogin");
 app.use("/api", LoginToLinkedIn);
 
+// LinkedIN Logout Handler
+const LogoutLinkedIn = require("./router/linkedInLogout");
+app.use("/api", LogoutLinkedIn)
 
 app.listen(PORT, () => {
     console.log(`Server in running on port ${PORT}`);
