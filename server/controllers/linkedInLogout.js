@@ -6,6 +6,11 @@ const sleep = (ms) => {
 };
 
 async function Logout(req, res) {
+    const cookieString = await fs.readFile('./cookies.json');
+    if(cookieString.length == 0){
+        res.status(200).send("Logout success!!");
+        return;
+    }
     try {
         // launching browser, creating page
         const browser = await puppeteer.launch({
