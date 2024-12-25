@@ -15,8 +15,7 @@ const sleep = (ms) => {
 router.get("/", async (req, res) => {
     // Check if cookie is avialable 
     const cookieString = await fs.readFile('./cookies.json');
-    let cookies = JSON.parse(cookieString);
-    if(cookies.length > 0){
+    if(cookieString.length > 0){
         res.status(200).send("Login success!!");
         return;
     }
