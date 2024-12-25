@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import JobDetails from "./components/JobDetails"
 import ProfileDetails from "./components/ProfileDetails"
 import NavBar from "./components/NavBar"
+import { LoginProvider } from "./LoginContext"
 
 function App() {
     const router = createBrowserRouter([
@@ -10,7 +11,9 @@ function App() {
         {path: '/profile-detail', element: <ProfileDetails />}
     ])
   return (
-    <RouterProvider router={router} />
+    <LoginProvider>
+        <RouterProvider router={router} />
+    </LoginProvider>
   )
 }
 

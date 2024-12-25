@@ -1,43 +1,45 @@
-import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LoginContext } from "../LoginContext";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
 export default function NavBar() {
     const location = useLocation();
-    const [loginToLinkedIn, setLoginToLinkedIn] = useState(false);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const login = async () => {
-            try {
-                if (!loginToLinkedIn) {
-                    const response = await axios.get(
-                        "http://localhost:3021/api/"
-                    );
-                    if (response.status == 200) {
-                        setLoginToLinkedIn(true);
-                    }
-                }
-            } catch (error) {
-                console.error("Login Error:", error);
+    // Login Context
+    const loginCtx = useContext(LoginContext);
+
+    async function handleLogoutLinkedIn() {
+        let response = null;
+        try {
+            response = await axios.post("http://localhost:3021/api/logout/", {});
+            if(response.status === 200){
+                loginCtx.setLoginToLinkedIn(false);
+                loginCtx.setInitalLinkedInLogoutState(false);
+                navigate("/");
             }
-        };
+        } catch (error) {
+            console.log(error.response?.data?.error);
+        }
+    }
 
-        login();
-    }, [loginToLinkedIn]);
-    // console.log(loginToLinkedIn)
     return (
-        <div className="mx-auto bg-slate-300 pb-2 relative">
+        <div className="mx-auto md:w-full lg:w-full bg-slate-300 pb-2 relative">
             <h1 className="w-fit mx-auto text-2xl font-semibold">
                 LinkedIn Scraper
             </h1>
 
             {/* show only if it is loged IN */}
-            {loginToLinkedIn && (
-                <button className="absolute right-1 top-1 bg-red-500 py-2 px-3 rounded-sm shadow-md">
+            {loginCtx.loginToLinkedIn && (
+                <button
+                    onClick={handleLogoutLinkedIn}
+                    className="absolute right-1 top-1 bg-red-500 py-2 px-3 rounded-sm shadow-md"
+                >
                     Logout LinkedIN
                 </button>
             )}
-            <div className="flex w-1/3 mx-auto justify-between">
+            <div className="flex md:w-1/3 mx-auto justify-between items-center">
                 <Link
                     to={"/job-detail"}
                     className={
